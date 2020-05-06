@@ -1,0 +1,9 @@
+---
+# tasks file for project
+- name: create namespace
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: '{{ meta.name }}'

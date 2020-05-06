@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: project.xddevelopment.com
+  kind: Project
+  role: project

@@ -1,0 +1,7 @@
+apiVersion: project.xddevelopment.com/v1alpha1
+kind: Project
+metadata:
+  name: test1234
+spec:
+  # Add fields here
+  size: 3
