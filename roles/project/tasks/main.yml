@@ -1,9 +1,102 @@
 ---
 # tasks file for project
-- name: create namespace
+- name: create Namespace
   community.kubernetes.k8s:
     definition:
       apiVersion: v1
       kind: Namespace
       metadata:
         name: '{{ meta.name }}'
+
+- name: create ResourceQuota
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+         name: '{{ meta.name }}'
+         namespace: '{{ meta.name }}'
+      spec:
+         hard:
+           requests.cpu: "{{resourcequotarequestscpu}}"
+           requests.memory: "{{resourcequotarequestsmemory}}"
+           limits.cpu: "{{resourcequotalimitscpu}}"
+           limits.memory: "{{resourcequotalimitsmemory}}"
+           count/jobs.batch: "{{resourcequotacountjobsbatch}}"
+           count/ingresses.extensions: "{{resourcequotacountingresses}}"
+           pods: "{{resourcequotapods}}"
+           services: "{{resourcequotaservices}}"
+
+- name: create LimitRange
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: v1
+      kind: LimitRange
+      metadata:
+         name: '{{ meta.name }}'
+         namespace: '{{ meta.name }}'
+      spec:
+        limits:
+        - max:
+            memory: 20Gi
+            cpu: "20000m"
+          min:
+            cpu: "100m"
+            memory: 100Mi
+          default:
+            cpu: "100m"
+            memory: 100Mi
+          defaultRequest:
+            cpu: "100m"
+            memory: 100Mi
+          type: Container
+
+- name: Deny all ingress traffic
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: default-deny-ingress
+        namespace: '{{ meta.name }}'
+      spec:
+        podSelector:
+          matchLabels: {}
+        policyTypes:
+        - Ingress
+
+- name: Deny all egress traffic
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: default-deny-egress
+        namespace: '{{ meta.name }}'
+      spec:
+        podSelector:
+          matchLabels: {}
+        policyTypes:
+        - Egress
+
+- name: Allow DNS egress traffic
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-dns-access
+        namespace: '{{ meta.name }}'
+      spec:
+        podSelector:
+          matchLabels: {}
+        policyTypes:
+        - Egress
+        egress:
+        - to:
+          - namespaceSelector:
+              matchLabels:
+                name: kube-system
+          ports:
+          - protocol: UDP
+            port: 53

@@ -7,7 +7,9 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - namespaces  
+  - limitranges
+  - resourcequotas
+  - namespaces
   - pods
   - services
   - services/finalizers
@@ -79,3 +81,36 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  - networkpolicies
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - patch
+  - update
+  - get
+  - list
+- apiGroups:
+  - extensions
+  resources:
+  - daemonsets
+  - deployments
+  - deployments/rollback
+  - deployments/scale
+  - ingresses
+  - networkpolicies
+  - replicasets
+  - replicasets/scale
+  - replicationcontrollers/scale
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - patch
+  - update
+  - get
+  - list
