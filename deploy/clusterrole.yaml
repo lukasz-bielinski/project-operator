@@ -5,6 +5,19 @@ metadata:
   name: project-operator
 rules:
 - apiGroups:
+  - policy
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - use
+- apiGroups:
   - ""
   resources:
   - limitranges
@@ -106,6 +119,7 @@ rules:
   - replicasets
   - replicasets/scale
   - replicationcontrollers/scale
+  - podsecuritypolicies
   verbs:
   - create
   - delete

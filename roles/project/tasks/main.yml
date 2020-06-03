@@ -101,13 +101,14 @@
           - protocol: UDP
             port: 53
 
+# TODO probalby should be move to different place
 - name: Create PodSecurityPolicy
   community.kubernetes.k8s:
     definition:
       apiVersion: policy/v1beta1
       kind: PodSecurityPolicy
       metadata:
-        name: restricted
+        name: restricted-general
         annotations:
           seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
           apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
