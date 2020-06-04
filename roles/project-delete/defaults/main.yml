@@ -1,0 +1,10 @@
+---
+# defaults file for project
+resourcequotarequestscpu: "1"
+resourcequotarequestsmemory: 1Gi
+resourcequotalimitscpu: "20"
+resourcequotalimitsmemory: 20Gi
+resourcequotacountjobsbatch: 10k
+resourcequotacountingresses: 5k
+resourcequotapods: 5k
+resourcequotaservices: "1000"

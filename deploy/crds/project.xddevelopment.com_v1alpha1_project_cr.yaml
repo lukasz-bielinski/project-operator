@@ -2,6 +2,7 @@ apiVersion: project.xddevelopment.com/v1alpha1
 kind: Project
 metadata:
   name: example-cr
+  namespace: cluster-operators  
 spec:
   # Add fields here
   size: 3

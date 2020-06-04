@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: project-operator
+  namespace: cluster-operators  
 spec:
   replicas: 1
   selector:

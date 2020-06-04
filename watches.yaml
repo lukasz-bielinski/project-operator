@@ -3,3 +3,6 @@
   group: project.xddevelopment.com
   kind: Project
   role: project
+  finalizer:
+    name: finalizer.project.project.xddevelopment.com
+    role: /opt/ansible/roles/project-delete

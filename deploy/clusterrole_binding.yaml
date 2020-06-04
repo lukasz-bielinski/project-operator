@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: project-operator
-  namespace: default
+  namespace: cluster-operators
 roleRef:
   kind: ClusterRole
   name: project-operator
