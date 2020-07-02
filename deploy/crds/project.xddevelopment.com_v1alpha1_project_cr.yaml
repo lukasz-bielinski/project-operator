@@ -6,11 +6,11 @@ metadata:
 spec:
   # Add fields here
   size: 3
-  resourcequotarequestscpu: "11"
-  resourcequotarequestsmemory: 22Gi
-  resourcequotalimitscpu: "33"
-  resourcequotalimitsmemory: 44Gi
-  resourcequotacountjobsbatch: 55k
-  resourcequotacountingresses: 66k
-  resourcequotapods: 77k
-  resourcequotaservices: "88"
+  resourcequotarequestscpu: "1"
+  resourcequotarequestsmemory: 2Gi
+  resourcequotalimitscpu: "3"
+  resourcequotalimitsmemory: 4Gi
+  resourcequotacountjobsbatch: 5k
+  resourcequotacountingresses: 6k
+  resourcequotapods: 7k
+  resourcequotaservices: "8"
