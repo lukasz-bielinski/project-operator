@@ -1,10 +1,11 @@
-# ---
-# # tasks file for project
-# - name: delete Namespace
-#   community.kubernetes.k8s:
-#     state: absent
-#     definition:
-#       apiVersion: v1
-#       kind: Namespace
-#       metadata:
-#         name: '{{ meta.name }}'
+---
+# tasks file for project
+- name: delete Namespace
+  community.kubernetes.k8s:
+    state: absent
+    definition:
+      apiVersion: v1
+      kind: LimitRange
+      metadata:
+         name: '{{ meta.name }}'
+         namespace: '{{ meta.name }}'
