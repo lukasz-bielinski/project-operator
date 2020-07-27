@@ -1,32 +1,5 @@
 ---
 # tasks file for project
-- name: create Namespace
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: '{{ meta.name }}'
-
-- name: create ResourceQuota
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: v1
-      kind: ResourceQuota
-      metadata:
-         name: '{{ meta.name }}'
-         namespace: '{{ meta.name }}'
-      spec:
-         hard:
-           requests.cpu: "{{resourcequotarequestscpu}}"
-           requests.memory: "{{resourcequotarequestsmemory}}"
-           limits.cpu: "{{resourcequotalimitscpu}}"
-           limits.memory: "{{resourcequotalimitsmemory}}"
-           count/jobs.batch: "{{resourcequotacountjobsbatch}}"
-           count/ingresses.extensions: "{{resourcequotacountingresses}}"
-           pods: "{{resourcequotapods}}"
-           services: "{{resourcequotaservices}}"
-
 - name: create LimitRange
   community.kubernetes.k8s:
     definition:
@@ -38,7 +11,7 @@
       spec:
         limits:
         - max:
-            memory: 20Gi
+            memory: 30Gi
             cpu: "20000m"
           min:
             cpu: "100m"
@@ -50,106 +23,3 @@
             cpu: "100m"
             memory: 100Mi
           type: Container
-
-- name: Deny all ingress traffic
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: default-deny-ingress
-        namespace: '{{ meta.name }}'
-      spec:
-        podSelector:
-          matchLabels: {}
-        policyTypes:
-        - Ingress
-
-- name: Deny all egress traffic
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: default-deny-egress
-        namespace: '{{ meta.name }}'
-      spec:
-        podSelector:
-          matchLabels: {}
-        policyTypes:
-        - Egress
-
-- name: Allow DNS egress traffic
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: allow-dns-access
-        namespace: '{{ meta.name }}'
-      spec:
-        podSelector:
-          matchLabels: {}
-        policyTypes:
-        - Egress
-        egress:
-        - to:
-          - namespaceSelector:
-              matchLabels:
-                name: kube-system
-          ports:
-          - protocol: UDP
-            port: 53
-
-# TODO probalby should be move to different place
-# - name: Create PodSecurityPolicy
-#   community.kubernetes.k8s:
-#     definition:
-#       apiVersion: policy/v1beta1
-#       kind: PodSecurityPolicy
-#       metadata:
-#         name: restricted-general
-#         annotations:
-#           seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
-#           apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
-#           seccomp.security.alpha.kubernetes.io/defaultProfileName:  'runtime/default'
-#           apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
-#       spec:
-#         privileged: false
-#         # Required to prevent escalations to root.
-#         allowPrivilegeEscalation: false
-#         # This is redundant with non-root + disallow privilege escalation,
-#         # but we can provide it for defense in depth.
-#         requiredDropCapabilities:
-#           - ALL
-#         # Allow core volume types.
-#         volumes:
-#           - 'configMap'
-#           - 'emptyDir'
-#           - 'projected'
-#           - 'secret'
-#           - 'downwardAPI'
-#           # Assume that persistentVolumes set up by the cluster admin are safe to use.
-#           - 'persistentVolumeClaim'
-#         hostNetwork: false
-#         hostIPC: false
-#         hostPID: false
-#         runAsUser:
-#           # Require the container to run without root privileges.
-#           rule: 'MustRunAsNonRoot'
-#         seLinux:
-#           # This policy assumes the nodes are using AppArmor rather than SELinux.
-#           rule: 'RunAsAny'
-#         supplementalGroups:
-#           rule: 'MustRunAs'
-#           ranges:
-#             # Forbid adding the root group.
-#             - min: 1
-#               max: 65535
-#         fsGroup:
-#           rule: 'MustRunAs'
-#           ranges:
-#             # Forbid adding the root group.
-#             - min: 1
-#               max: 65535
-#         readOnlyRootFilesystem: true

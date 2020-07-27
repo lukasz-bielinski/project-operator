@@ -1,8 +1,5 @@
 ---
-- version: v1alpha1
-  group: project.xddevelopment.com
-  kind: Project
-  role: project
-  finalizer:
-    name: finalizer.project.project.xddevelopment.com
-    role: /opt/ansible/roles/project-delete
+- version: v1
+  group: core
+  kind: Namespace
+  role: namespace
