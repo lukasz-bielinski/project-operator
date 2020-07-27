@@ -2,7 +2,7 @@ apiVersion: project.xddevelopment.com/v1alpha1
 kind: Project
 metadata:
   name: example-cr
-  namespace: cluster-operators  
+  namespace: cluster-operators
 spec:
   # Add fields here
   size: 3
@@ -14,3 +14,8 @@ spec:
   resourcequotacountingresses: 6k
   resourcequotapods: 7k
   resourcequotaservices: "8"
+  resourcequotaconfigmaps: "99"
+  resourcequotapersistentvolumeclaims: "98"
+  resourcequotareplicationcontrollers: "97"
+  resourcequotasecrets: "96"
+  resourcequotaservicesloadbalancers: "95"

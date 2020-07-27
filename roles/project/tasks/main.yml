@@ -26,6 +26,11 @@
            count/ingresses.extensions: "{{resourcequotacountingresses}}"
            pods: "{{resourcequotapods}}"
            services: "{{resourcequotaservices}}"
+           configmaps: "{{resourcequotaconfigmaps}}"
+           persistentvolumeclaims: "{{resourcequotapersistentvolumeclaims}}"
+           replicationcontrollers: "{{resourcequotareplicationcontrollers}}"
+           secrets: "{{resourcequotasecrets}}"
+           services.loadbalancers: "{{resourcequotaservicesloadbalancers}}"
 
 - name: create LimitRange
   community.kubernetes.k8s:
@@ -41,11 +46,11 @@
             memory: 20Gi
             cpu: "20000m"
           min:
-            cpu: "100m"
-            memory: 100Mi
+            cpu: "50m"
+            memory: 50Mi
           default:
-            cpu: "100m"
-            memory: 100Mi
+            cpu: "1000m"
+            memory: 1000Mi
           defaultRequest:
             cpu: "100m"
             memory: 100Mi
