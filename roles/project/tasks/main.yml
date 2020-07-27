@@ -11,15 +11,15 @@
       spec:
         limits:
         - max:
-            memory: 30Gi
-            cpu: "20000m"
+            memory: "{{limitrangemaxmem}}"
+            cpu: "{{limitrangemaxcpu}}"
           min:
-            cpu: "50m"
-            memory: 50Mi
+            cpu: "{{limitrangemincpu}}"
+            memory: "{{limitrangeminmem}}"
           default:
-            cpu: "1000m"
-            memory: 1000Mi
+            cpu: "{{limitrangedefaultcpu}}"
+            memory: "{{limitrangedefaultmem}}"
           defaultRequest:
-            cpu: "100m"
-            memory: 100Mi
+            cpu: "{{limitrangedefaultrequestcpu}}"
+            memory: "{{limitrangedefaultrequestmem}}"
           type: Container

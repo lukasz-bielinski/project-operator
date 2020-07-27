@@ -8,3 +8,11 @@ resourcequotacountjobsbatch: 10k
 resourcequotacountingresses: 5k
 resourcequotapods: 5k
 resourcequotaservices: "1000"
+limitrangemaxmem: "30Gi"
+limitrangemaxcpu: "20000m"
+limitrangemincpu: "50m"
+limitrangeminmem: "50Mi"
+limitrangedefaultcpu: "1000m"
+limitrangedefaultmem: "1000Mi"
+limitrangedefaultrequestcpu: "100m"
+limitrangedefaultrequestmem: "100Mi"
