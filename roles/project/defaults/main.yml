@@ -8,6 +8,11 @@ resourcequotacountjobsbatch: 10k
 resourcequotacountingresses: 5k
 resourcequotapods: 5k
 resourcequotaservices: "1000"
+resourcequotaconfigmaps: "100"
+resourcequotapersistentvolumeclaims: "50"
+resourcequotareplicationcontrollers: "500"
+resourcequotasecrets: "100"
+resourcequotaservicesloadbalancers: "10"
 limitrangemaxmem: "30Gi"
 limitrangemaxcpu: "20000m"
 limitrangemincpu: "50m"
