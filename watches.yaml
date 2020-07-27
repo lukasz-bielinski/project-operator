@@ -1,5 +1,5 @@
 ---
 - version: v1
-  group: core
   kind: Namespace
-  role: namespace
+  role: project
+  manageStatus: false

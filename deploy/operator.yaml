@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: project-operator
-  namespace: cluster-operators    
+  namespace: cluster-operators
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
       containers:
         - name: project-operator
           # Replace this with the built image name
-          image: "lukaszbielinski/operator:latest"
+          image: "lukaszbielinski/operator:limit-ranges-only"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
