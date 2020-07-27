@@ -1,163 +1,26 @@
 ---
 # tasks file for project
-- name: create Namespace
+- name: create Project cr
   community.kubernetes.k8s:
     definition:
-      apiVersion: v1
-      kind: Namespace
+      apiVersion: project.xddevelopment.com/v1alpha1
+      kind: Project
       metadata:
         name: '{{ meta.name }}'
-
-- name: create ResourceQuota
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: v1
-      kind: ResourceQuota
-      metadata:
-         name: '{{ meta.name }}'
-         namespace: '{{ meta.name }}'
+        namespace: cluster-operators
       spec:
-         hard:
-           requests.cpu: "{{resourcequotarequestscpu}}"
-           requests.memory: "{{resourcequotarequestsmemory}}"
-           limits.cpu: "{{resourcequotalimitscpu}}"
-           limits.memory: "{{resourcequotalimitsmemory}}"
-           count/jobs.batch: "{{resourcequotacountjobsbatch}}"
-           count/ingresses.extensions: "{{resourcequotacountingresses}}"
-           pods: "{{resourcequotapods}}"
-           services: "{{resourcequotaservices}}"
-           configmaps: "{{resourcequotaconfigmaps}}"
-           persistentvolumeclaims: "{{resourcequotapersistentvolumeclaims}}"
-           replicationcontrollers: "{{resourcequotareplicationcontrollers}}"
-           secrets: "{{resourcequotasecrets}}"
-           services.loadbalancers: "{{resourcequotaservicesloadbalancers}}"
-
----
-# tasks file for project
-- name: create LimitRange
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: v1
-      kind: LimitRange
-      metadata:
-         name: '{{ meta.name }}'
-         namespace: '{{ meta.name }}'
-      spec:
-        limits:
-        - max:
-            memory: "{{limitrangemaxmem}}"
-            cpu: "{{limitrangemaxcpu}}"
-          min:
-            cpu: "{{limitrangemincpu}}"
-            memory: "{{limitrangeminmem}}"
-          default:
-            cpu: "{{limitrangedefaultcpu}}"
-            memory: "{{limitrangedefaultmem}}"
-          defaultRequest:
-            cpu: "{{limitrangedefaultrequestcpu}}"
-            memory: "{{limitrangedefaultrequestmem}}"
-          type: Container
-
-
-- name: Deny all ingress traffic
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: default-deny-ingress
-        namespace: '{{ meta.name }}'
-      spec:
-        podSelector:
-          matchLabels: {}
-        policyTypes:
-        - Ingress
-
-- name: Deny all egress traffic
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: default-deny-egress
-        namespace: '{{ meta.name }}'
-      spec:
-        podSelector:
-          matchLabels: {}
-        policyTypes:
-        - Egress
-
-- name: Allow DNS egress traffic
-  community.kubernetes.k8s:
-    definition:
-      apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: allow-dns-access
-        namespace: '{{ meta.name }}'
-      spec:
-        podSelector:
-          matchLabels: {}
-        policyTypes:
-        - Egress
-        egress:
-        - to:
-          - namespaceSelector:
-              matchLabels:
-                name: kube-system
-          ports:
-          - protocol: UDP
-            port: 53
-
-# TODO probalby should be move to different place
-# - name: Create PodSecurityPolicy
-#   community.kubernetes.k8s:
-#     definition:
-#       apiVersion: policy/v1beta1
-#       kind: PodSecurityPolicy
-#       metadata:
-#         name: restricted-general
-#         annotations:
-#           seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
-#           apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
-#           seccomp.security.alpha.kubernetes.io/defaultProfileName:  'runtime/default'
-#           apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
-#       spec:
-#         privileged: false
-#         # Required to prevent escalations to root.
-#         allowPrivilegeEscalation: false
-#         # This is redundant with non-root + disallow privilege escalation,
-#         # but we can provide it for defense in depth.
-#         requiredDropCapabilities:
-#           - ALL
-#         # Allow core volume types.
-#         volumes:
-#           - 'configMap'
-#           - 'emptyDir'
-#           - 'projected'
-#           - 'secret'
-#           - 'downwardAPI'
-#           # Assume that persistentVolumes set up by the cluster admin are safe to use.
-#           - 'persistentVolumeClaim'
-#         hostNetwork: false
-#         hostIPC: false
-#         hostPID: false
-#         runAsUser:
-#           # Require the container to run without root privileges.
-#           rule: 'MustRunAsNonRoot'
-#         seLinux:
-#           # This policy assumes the nodes are using AppArmor rather than SELinux.
-#           rule: 'RunAsAny'
-#         supplementalGroups:
-#           rule: 'MustRunAs'
-#           ranges:
-#             # Forbid adding the root group.
-#             - min: 1
-#               max: 65535
-#         fsGroup:
-#           rule: 'MustRunAs'
-#           ranges:
-#             # Forbid adding the root group.
-#             - min: 1
-#               max: 65535
-#         readOnlyRootFilesystem: true
+        # Add fields here
+        resourcequotarequestscpu: "200"
+        resourcequotarequestsmemory: 200Gi
+        resourcequotalimitscpu: "200"
+        resourcequotalimitsmemory: 300Gi
+        resourcequotacountjobsbatch: 1000
+        resourcequotacountingresses: 50
+        resourcequotapods: 1000
+        resourcequotaservices: "100"
+        resourcequotaconfigmaps: "500"
+        resourcequotapersistentvolumeclaims: "100"
+        resourcequotareplicationcontrollers: "500"
+        resourcequotasecrets: "100"
+        resourcequotaservicesloadbalancers: "50"
+  when:  (meta.name  != 'kube-system') and (meta.name  != 'kube-node-lease') and (meta.name  != 'kube-public')
