@@ -33,7 +33,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "project-operator"
+              value: "project-operator-create-project-cr"
             - name: ANSIBLE_GATHERING
               value: explicit
           livenessProbe:

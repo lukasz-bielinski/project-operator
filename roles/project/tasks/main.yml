@@ -23,4 +23,4 @@
         resourcequotareplicationcontrollers: "500"
         resourcequotasecrets: "100"
         resourcequotaservicesloadbalancers: "50"
-  when:  (meta.name  != 'kube-system') and (meta.name  != 'kube-node-lease') and (meta.name  != 'kube-public')
+  when:  (meta.name  != 'kube-system') and (meta.name  != 'kube-node-lease') and (meta.name  != 'kube-public') and (meta.name  != 'monitoring')
