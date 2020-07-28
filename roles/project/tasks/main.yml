@@ -31,9 +31,7 @@
            replicationcontrollers: "{{resourcequotareplicationcontrollers}}"
            secrets: "{{resourcequotasecrets}}"
            services.loadbalancers: "{{resourcequotaservicesloadbalancers}}"
-
----
-# tasks file for project
+           
 - name: create LimitRange
   community.kubernetes.k8s:
     definition:
