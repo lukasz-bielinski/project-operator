@@ -1,0 +1,8 @@
+domain: xddevelopment.com
+layout: ansible.sdk.operatorframework.io/v1
+projectName: limitrange
+resources:
+- group: apps
+  kind: Project
+  version: v1alpha1
+version: 3-alpha

@@ -1,0 +1,60 @@
+---
+# tasks file for project
+- name: create LimitRange
+  community.kubernetes.k8s:
+    definition:
+      apiVersion: v1
+      kind: LimitRange
+      metadata:
+         name: '{{ ansible_operator_meta.name }}'
+         namespace: '{{ ansible_operator_meta.name }}'
+      spec:
+        limits:
+        - max:
+            memory: "{{limitrangemaxmem}}"
+            cpu: "{{limitrangemaxcpu}}"
+          min:
+            cpu: "{{limitrangemincpu}}"
+            memory: "{{limitrangeminmem}}"
+          default:
+            cpu: "{{limitrangedefaultcpu}}"
+            memory: "{{limitrangedefaultmem}}"
+          defaultRequest:
+            cpu: "{{limitrangedefaultrequestcpu}}"
+            memory: "{{limitrangedefaultrequestmem}}"
+          type: Container
+  when:  (ansible_operator_meta.name  != 'kube-system') and (ansible_operator_meta.name  != 'kube-node-lease') and (ansible_operator_meta.name  != 'kube-public') and (ansible_operator_meta.name  != 'monitoring') and (ansible_operator_meta.name  != 'argocd')  and (ansible_operator_meta.name  != 'concourse') and (ansible_operator_meta.name  != 'rook-ceph')  and (ansible_operator_meta.name != 'ingress-controller')
+
+
+# ---
+# # tasks file for Memcached
+# # Update file in operator-sdk-samples/ansible/generate/role_main.yml
+# - name: start memcached
+#   community.kubernetes.k8s:
+#     definition:
+#       kind: Deployment
+#       apiVersion: apps/v1
+#       metadata:
+#         name: '{{ ansible_operator_meta.name }}-memcached'
+#         namespace: '{{ ansible_operator_meta.namespace }}'
+#       spec:
+#         replicas: "{{size}}"
+#         selector:
+#           matchLabels:
+#             app: memcached
+#         template:
+#           metadata:
+#             labels:
+#               app: memcached
+#           spec:
+#             containers:
+#             - name: memcached
+#               command:
+#               - memcached
+#               - -m=64
+#               - -o
+#               - modern
+#               - -v
+#               image: "docker.io/memcached:1.4.36-alpine"
+#               ports:
+#                 - containerPort: 11211
