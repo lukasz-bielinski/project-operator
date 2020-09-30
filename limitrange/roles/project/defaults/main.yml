@@ -1,0 +1,10 @@
+---
+# defaults file for project
+limitrangemaxmem: "30Gi"
+limitrangemaxcpu: "20000m"
+limitrangemincpu: "50m"
+limitrangeminmem: "50Mi"
+limitrangedefaultcpu: "1000m"
+limitrangedefaultmem: "1000Mi"
+limitrangedefaultrequestcpu: "100m"
+limitrangedefaultrequestmem: "100Mi"
